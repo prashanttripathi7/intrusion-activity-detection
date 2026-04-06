@@ -1,0 +1,15 @@
+{
+    "suspicious_ips": [
+        "185.220.101.45",
+        "203.0.113.50",
+        "198.51.100.24"
+    ],
+    "attack_signatures": [
+        "UNION SELECT",
+        "' OR 1=1 --",
+        "../etc/passwd",
+        "cmd.exe /c whoami",
+        "nmap scan"
+    ],
+    "request_threshold_per_minute": 8
+}

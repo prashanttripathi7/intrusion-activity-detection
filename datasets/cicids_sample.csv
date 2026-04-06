@@ -1,0 +1,5 @@
+SourceIP,Label,Signature,Method,Path,Status
+185.220.101.45,DoS,High request burst,GET,/login,401
+203.0.113.50,Web Attack - SQL Injection,UNION SELECT,GET,/product?id=1 UNION SELECT username,password FROM users,500
+198.51.100.24,Brute Force,Repeated failed login,POST,/login,401
+192.0.2.10,BENIGN,Normal browsing,GET,/home,200

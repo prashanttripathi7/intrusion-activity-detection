@@ -338,7 +338,3 @@ Run commands from the project root, not from inside `backend/`.
 
 - click `Stop Monitoring` first
 - confirm `reports_output/ids_final_report.pdf` was generated
-
-## License
-
-Add a `LICENSE` file before publishing publicly if you want others to reuse the code under explicit terms.

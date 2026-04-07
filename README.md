@@ -1,6 +1,6 @@
 # Intrusion Activity Detection & Attack Trace System
 
-A beginner-friendly real-time intrusion detection system built with FastAPI, WebSockets, rule-based OWASP detection, dataset-informed pattern matching, attack correlation, timeline generation, and PDF reporting.
+A beginner friendly real-time intrusion detection system (IDS) built with FastAPI, WebSockets, rule-based OWASP detection, dataset-informed pattern matching, attack correlation, timeline generation, and PDF reporting.
 
 This project supports two main use cases:
 

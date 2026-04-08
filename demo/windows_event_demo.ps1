@@ -4,22 +4,22 @@ Write-Host "Run this after clicking 'Start Monitoring' in the dashboard." -Foreg
 $events = @(
     @{
         Type = "WARNING"
-        Id = 1000
+        Id = 1
         Description = "TLSv1.0 insecure protocol negotiated with remote host 192.0.2.200"
     },
     @{
         Type = "ERROR"
-        Id = 1001
+        Id = 2
         Description = "Possible SQL injection attempt from 203.0.113.50 using UNION SELECT on /product?id=1"
     },
     @{
         Type = "WARNING"
-        Id = 1002
+        Id = 3
         Description = "Suspicious command execution request: cmd.exe /c whoami from 203.0.113.50"
     },
     @{
         Type = "WARNING"
-        Id = 1003
+        Id = 4
         Description = "Access denied for admin path /admin from 185.220.101.45 status 403"
     }
 )

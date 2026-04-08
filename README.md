@@ -135,7 +135,7 @@ When you click `Stop Monitoring`:
 
 ## Demo Scripts
 
-The repository includes safe demo helpers for both Windows and Linux.
+The repository includes safe demo helpers for both Windows and Linux. (For Windows, copy the demo file content and run it in PowerShell as an administrator)
 
 ### Windows Demo
 

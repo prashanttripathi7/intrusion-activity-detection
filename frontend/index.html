@@ -3,60 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real-Time IDS Dashboard</title>
+    <title>Intrusion Activity Detection Dashboard</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="app-shell">
-        <header class="hero">
-            <div>
+        <header class="hero-shell card">
+            <div class="hero-copy-block">
                 <p class="eyebrow">Intrusion Activity Detection & Attack Trace System</p>
-                <h1>Real-Time IDS Dashboard</h1>
-                <p class="hero-copy">Monitor logs, detect OWASP attacks, correlate incident chains, and export a PDF report from one screen.</p>
+                <h1>Security Operations Dashboard</h1>
+                <p class="hero-copy">
+                    Watch host activity live, inspect suspicious sequences, compare historical versus real-time monitoring,
+                    and export a polished incident report from one place.
+                </p>
+                <div class="hero-badges">
+                    <span class="badge-pill">OWASP Rules</span>
+                    <span class="badge-pill">Dataset Patterns</span>
+                    <span class="badge-pill">Attack Correlation</span>
+                </div>
             </div>
             <div class="hero-actions">
-                <select id="scanModeSelect" class="mode-select">
-                    <option value="live">Live Monitoring</option>
-                    <option value="historical">Historical Scan</option>
-                </select>
-                <button id="startBtn" class="btn btn-primary">Start Monitoring</button>
-                <button id="stopBtn" class="btn btn-danger">Stop Monitoring</button>
-                <button id="downloadBtn" class="btn btn-secondary">Download Report</button>
+                <div class="mode-switch" role="tablist" aria-label="Scan mode selector">
+                    <button id="liveModeBtn" class="mode-pill active" data-scan-mode="live" type="button">Live</button>
+                    <button id="historicalModeBtn" class="mode-pill" data-scan-mode="historical" type="button">Historical</button>
+                </div>
+                <button id="startBtn" class="btn btn-primary" type="button">Start Monitoring</button>
+                <button id="stopBtn" class="btn btn-danger" type="button">Stop Monitoring</button>
+                <button id="downloadBtn" class="btn btn-secondary" type="button">Download Report</button>
             </div>
         </header>
 
-        <section class="status-bar">
-            <div class="status-card">
-                <span class="status-label">Monitoring</span>
-                <strong id="monitoringStatus">Stopped</strong>
-            </div>
-            <div class="status-card">
-                <span class="status-label">Total Alerts</span>
-                <strong id="alertCount">0</strong>
-            </div>
-            <div class="status-card">
-                <span class="status-label">Attack Chains</span>
-                <strong id="chainCount">0</strong>
-            </div>
-            <div class="status-card">
-                <span class="status-label">Scan Mode</span>
-                <strong id="scanModeStatus">Live</strong>
-            </div>
+        <section class="overview-grid">
+            <article class="card command-card">
+                <div class="card-head">
+                    <div>
+                        <p class="section-tag">Session Status</p>
+                        <h2>Monitoring Control</h2>
+                    </div>
+                    <span id="monitoringDot" class="status-dot"></span>
+                </div>
+                <div class="status-stack">
+                    <div class="status-row">
+                        <span>Monitoring</span>
+                        <strong id="monitoringStatus">Stopped</strong>
+                    </div>
+                    <div class="status-row">
+                        <span>Scan Mode</span>
+                        <strong id="scanModeStatus">Live</strong>
+                    </div>
+                    <div class="status-row">
+                        <span>Source</span>
+                        <strong id="sourceModeStatus">Auto</strong>
+                    </div>
+                    <div class="status-row">
+                        <span>Recent Alert</span>
+                        <strong id="recentAlertStatus">No active alerts</strong>
+                    </div>
+                </div>
+                <div class="command-footer">
+                    <div class="mini-stat">
+                        <span class="mini-label">Suspicious IPs</span>
+                        <strong id="suspiciousIpCount">0</strong>
+                    </div>
+                    <div class="mini-stat">
+                        <span class="mini-label">Visible Alerts</span>
+                        <strong id="visibleAlertCount">0</strong>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card radar-card">
+                <div class="card-head">
+                    <div>
+                        <p class="section-tag">Threat Pulse</p>
+                        <h2>System Overview</h2>
+                    </div>
+                </div>
+                <div class="ring-grid">
+                    <div class="ring-card">
+                        <div id="logsRing" class="stat-ring" style="--progress: 8%;">
+                            <div class="ring-core">
+                                <strong id="logsCount">0</strong>
+                                <span>Logs</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ring-card">
+                        <div id="alertsRing" class="stat-ring accent-alert" style="--progress: 8%;">
+                            <div class="ring-core">
+                                <strong id="alertCount">0</strong>
+                                <span>Alerts</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ring-card">
+                        <div id="chainsRing" class="stat-ring accent-chain" style="--progress: 8%;">
+                            <div class="ring-core">
+                                <strong id="chainCount">0</strong>
+                                <span>Chains</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="overview-caption">
+                    Circular meters make the incident load easy to read at a glance during a presentation or live response.
+                </div>
+            </article>
+
+            <article class="card severity-card">
+                <div class="card-head">
+                    <div>
+                        <p class="section-tag">Severity Radar</p>
+                        <h2>Alert Breakdown</h2>
+                    </div>
+                </div>
+                <div class="severity-rows">
+                    <div class="severity-row severity-high">
+                        <div class="severity-meta">
+                            <span>High</span>
+                            <strong id="highCount">0</strong>
+                        </div>
+                        <div class="severity-bar"><span id="highBar"></span></div>
+                    </div>
+                    <div class="severity-row severity-medium">
+                        <div class="severity-meta">
+                            <span>Medium</span>
+                            <strong id="mediumCount">0</strong>
+                        </div>
+                        <div class="severity-bar"><span id="mediumBar"></span></div>
+                    </div>
+                    <div class="severity-row severity-low">
+                        <div class="severity-meta">
+                            <span>Low</span>
+                            <strong id="lowCount">0</strong>
+                        </div>
+                        <div class="severity-bar"><span id="lowBar"></span></div>
+                    </div>
+                </div>
+                <div>
+                    <p class="subsection-title">Top Suspicious IPs</p>
+                    <div id="topIpsContainer" class="chip-list"></div>
+                </div>
+            </article>
         </section>
 
-        <section class="panel-grid">
-            <article class="panel">
-                <div class="panel-header">
-                    <h2>Live Logs</h2>
-                    <input id="logSearch" type="text" placeholder="Search logs">
+        <section class="panel-layout">
+            <article class="card panel panel-logs">
+                <div class="panel-head">
+                    <div>
+                        <p class="section-tag">Live Stream</p>
+                        <h2>Event Logs</h2>
+                    </div>
+                    <input id="logSearch" type="text" class="control-input" placeholder="Search logs, IPs, paths, messages">
                 </div>
                 <div id="logsContainer" class="scroll-panel"></div>
             </article>
 
-            <article class="panel">
-                <div class="panel-header">
-                    <h2>Alerts</h2>
-                    <select id="severityFilter">
+            <article class="card panel panel-alerts">
+                <div class="panel-head">
+                    <div>
+                        <p class="section-tag">Detections</p>
+                        <h2>Alerts</h2>
+                    </div>
+                    <select id="severityFilter" class="control-input">
                         <option value="ALL">All Severity</option>
                         <option value="High">High</option>
                         <option value="Medium">Medium</option>
@@ -65,19 +174,23 @@
                 </div>
                 <div id="alertsContainer" class="scroll-panel"></div>
             </article>
-        </section>
 
-        <section class="panel-grid bottom-grid">
-            <article class="panel">
-                <div class="panel-header">
-                    <h2>Timeline</h2>
+            <article class="card panel panel-timeline">
+                <div class="panel-head">
+                    <div>
+                        <p class="section-tag">Progression</p>
+                        <h2>Timeline</h2>
+                    </div>
                 </div>
                 <div id="timelineContainer" class="scroll-panel"></div>
             </article>
 
-            <article class="panel">
-                <div class="panel-header">
-                    <h2>Attack Chains</h2>
+            <article class="card panel panel-chains">
+                <div class="panel-head">
+                    <div>
+                        <p class="section-tag">Correlation</p>
+                        <h2>Attack Chains</h2>
+                    </div>
                 </div>
                 <div id="chainsContainer" class="scroll-panel"></div>
             </article>

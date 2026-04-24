@@ -1,6 +1,6 @@
 # Intrusion Activity Detection & Attack Trace System
 
-A beginner-friendly real-time intrusion detection system built with FastAPI, WebSockets, rule-based OWASP detection, dataset-informed pattern matching, attack correlation, timeline generation, and PDF reporting.
+A beginner friendly real-time intrusion detection system (IDS) built with FastAPI, WebSockets, rule-based OWASP detection, dataset-informed pattern matching, attack correlation, timeline generation, and PDF reporting.
 
 This project supports two main use cases:
 
@@ -135,7 +135,7 @@ When you click `Stop Monitoring`:
 
 ## Demo Scripts
 
-The repository includes safe demo helpers for both Windows and Linux.
+The repository includes safe demo helpers for both Windows and Linux. (For Windows, copy the demo file content and run it in PowerShell as an administrator)
 
 ### Windows Demo
 
@@ -338,7 +338,3 @@ Run commands from the project root, not from inside `backend/`.
 
 - click `Stop Monitoring` first
 - confirm `reports_output/ids_final_report.pdf` was generated
-
-## License
-
-Add a `LICENSE` file before publishing publicly if you want others to reuse the code under explicit terms.

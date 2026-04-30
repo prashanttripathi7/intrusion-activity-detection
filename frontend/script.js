@@ -12,14 +12,14 @@ const state = {
 const elements = {
     monitoringStatus: document.getElementById("monitoringStatus"),
     monitoringDot: document.getElementById("monitoringDot"),
+    alertCount: document.getElementById("alertCount"),
+    chainCount: document.getElementById("chainCount"),
     scanModeStatus: document.getElementById("scanModeStatus"),
     sourceModeStatus: document.getElementById("sourceModeStatus"),
     recentAlertStatus: document.getElementById("recentAlertStatus"),
     suspiciousIpCount: document.getElementById("suspiciousIpCount"),
     visibleAlertCount: document.getElementById("visibleAlertCount"),
     logsCount: document.getElementById("logsCount"),
-    alertCount: document.getElementById("alertCount"),
-    chainCount: document.getElementById("chainCount"),
     highCount: document.getElementById("highCount"),
     mediumCount: document.getElementById("mediumCount"),
     lowCount: document.getElementById("lowCount"),
@@ -60,10 +60,7 @@ function formatTimestamp(value) {
 }
 
 function highlightIp(text) {
-    return String(text).replace(
-        /(\b\d{1,3}(?:\.\d{1,3}){3}\b)/g,
-        '<span class="highlight-ip">$1</span>'
-    );
+    return String(text).replace(/(\b\d{1,3}(?:\.\d{1,3}){3}\b)/g, '<span class="highlight-ip">$1</span>');
 }
 
 function normalizedSourceLabel(mode) {
@@ -133,21 +130,16 @@ function renderTopIps() {
 
 function renderLogs() {
     const query = elements.logSearch.value.trim().toLowerCase();
-    const filtered = state.logs
-        .slice()
-        .reverse()
-        .filter((item) => {
-            if (!query) {
-                return true;
-            }
-            const combined = `${item.raw} ${JSON.stringify(item.parsed)}`.toLowerCase();
-            return combined.includes(query);
-        });
+    const filtered = state.logs.slice().reverse().filter((item) => {
+        if (!query) {
+            return true;
+        }
+        const combined = `${item.raw} ${JSON.stringify(item.parsed)}`.toLowerCase();
+        return combined.includes(query);
+    });
 
     elements.logsContainer.innerHTML = filtered.length
-        ? filtered
-              .map(
-                  (item) => `
+        ? filtered.map((item) => `
             <div class="item">
                 <div class="item-head">
                     <span class="item-title">${escapeHtml(item.source)}</span>
@@ -156,9 +148,7 @@ function renderLogs() {
                 <div class="item-meta">${highlightIp(escapeHtml(item.raw))}</div>
                 <span class="item-kicker">Parsed Event</span>
             </div>
-        `
-              )
-              .join("")
+        `).join("")
         : '<div class="item"><div class="item-meta">No logs received yet.</div></div>';
 }
 
@@ -167,9 +157,7 @@ function renderAlerts() {
     elements.visibleAlertCount.textContent = String(filtered.length);
 
     elements.alertsContainer.innerHTML = filtered.length
-        ? filtered
-              .map(
-                  (item) => `
+        ? filtered.map((item) => `
             <div class="item alert-${item.severity.toLowerCase()}">
                 <div class="item-head">
                     <span class="item-title">${escapeHtml(item.category)}</span>
@@ -179,18 +167,14 @@ function renderAlerts() {
                 <div class="item-meta">Severity: ${escapeHtml(item.severity)} | Rule: ${escapeHtml(item.rule_id)} | IP: ${highlightIp(escapeHtml(item.ip_address || "N/A"))}</div>
                 <span class="item-kicker">${escapeHtml(item.severity)} Priority</span>
             </div>
-        `
-              )
-              .join("")
+        `).join("")
         : '<div class="item"><div class="item-meta">No alerts triggered.</div></div>';
 }
 
 function renderTimeline() {
     const items = state.timeline.slice().reverse();
     elements.timelineContainer.innerHTML = items.length
-        ? items
-              .map(
-                  (item) => `
+        ? items.map((item) => `
             <div class="item">
                 <div class="item-head">
                     <span class="item-title">${escapeHtml(item.title)}</span>
@@ -199,30 +183,24 @@ function renderTimeline() {
                 <div class="item-meta">Type: ${escapeHtml(item.event_type)}</div>
                 <span class="item-kicker">Timeline Entry</span>
             </div>
-        `
-              )
-              .join("")
+        `).join("")
         : '<div class="item"><div class="item-meta">Timeline is empty.</div></div>';
 }
 
 function renderChains() {
     const items = state.attackChains.slice().reverse();
     elements.chainsContainer.innerHTML = items.length
-        ? items
-              .map(
-                  (item) => `
+        ? items.map((item) => `
             <div class="item">
                 <div class="item-head">
                     <span class="item-title">${escapeHtml(item.title)}</span>
                     <span class="item-time">${escapeHtml(formatTimestamp(item.created_at))}</span>
                 </div>
                 <div class="item-meta">Chain: ${escapeHtml(item.chain_id)} | Severity: ${escapeHtml(item.severity)} | Source IP: ${highlightIp(escapeHtml(item.source_ip || "Unknown"))}</div>
-                <div class="item-meta">Steps: ${item.steps.map((step) => escapeHtml(step.rule_id)).join(" → ")}</div>
+                <div class="item-meta">Steps: ${item.steps.map((step) => escapeHtml(step.rule_id)).join(" -> ")}</div>
                 <span class="item-kicker">Correlated Sequence</span>
             </div>
-        `
-              )
-              .join("")
+        `).join("")
         : '<div class="item"><div class="item-meta">No correlated attack chains yet.</div></div>';
 }
 
@@ -276,7 +254,6 @@ async function fetchInitialData() {
     state.alerts = (await alertsResponse.json()).items;
     state.timeline = (await timelineResponse.json()).items;
     state.attackChains = (await chainResponse.json()).items;
-
     const statusPayload = await statusResponse.json();
     state.monitoringActive = statusPayload.monitoring_active;
     state.sourceMode = statusPayload.source_mode || "auto";
@@ -295,12 +272,10 @@ async function startMonitoring() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mode: "auto", scan_mode: state.selectedScanMode }),
     });
-
     if (!response.ok) {
         alert("Unable to start monitoring.");
         return;
     }
-
     state.scanMode = state.selectedScanMode;
     await fetchInitialData();
 }

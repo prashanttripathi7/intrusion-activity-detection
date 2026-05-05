@@ -274,46 +274,6 @@ The report includes:
 - Protected files in `/var/log/` may require elevated permissions.
 - If no host logs appear, run the backend with sufficient access or use the bundled demo mode.
 
-## GitHub Readiness
-
-This repository already ignores local-only files such as:
-
-- `.venv/`
-- `__pycache__/`
-- `.codex/`
-- `reports_output/`
-- generated PDF files
-- common IDE settings
-
-## Before You Push
-
-Recommended checklist:
-
-1. Make sure `.venv/`, `.codex/`, `reports_output/`, and `__pycache__/` are not tracked.
-2. Confirm the app runs from the project root.
-3. Verify the dashboard loads at `http://127.0.0.1:8000`.
-4. Run at least one demo script and confirm alerts appear.
-5. Stop monitoring and confirm the PDF report is generated.
-6. Review `README.md` in GitHub preview after pushing.
-
-Useful Git commands:
-
-```bash
-git status
-git add .
-git commit -m "Prepare IDS project for GitHub"
-git branch -M main
-git remote add origin https://github.com/your-username/your-repo-name.git
-git push -u origin main
-```
-
-If `origin` already exists:
-
-```bash
-git remote set-url origin https://github.com/your-username/your-repo-name.git
-git push -u origin main
-```
-
 ## Troubleshooting
 
 ### `ModuleNotFoundError: No module named 'fastapi'`
